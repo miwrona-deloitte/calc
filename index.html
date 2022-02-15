@@ -6,48 +6,44 @@
 </head>
 <body>
   <div id="root"></div>
-  <script type="text/babel">
+  <script
+    data-plugins="transform-modules-umd"
+    type="text/babel"
+    src="./components/Button.js"
+  ></script>
+  <script data-plugins="transform-modules-umd" type="text/babel">
+    import Button from "./components/Button";
     function App() {
       const [display, setDisplay] = React.useState(0);
-      function Button(props) {
-        const handleClick = (e) => {
-          setDisplay(e.target.value);
-        };
-
-        return (
-          <button
-            onClick={handleClick}
-            type="button"
-            className="button"
-            value={props.sign}
-          >
-            {props.sign}
-          </button>
-        );
-      }
+      const handleDigit = (e) => {
+        setDisplay(e.target.value);
+      };
       return (
         <>
           <div className="screen">
             <p className="display">{display}</p>
           </div>
           <div className="keyboard">
-            <div className="horizontal"></div>
-            <div className="digits">
-              <Button sign="AC" />
-              <Button sign="+/-" />
-              <Button sign="%" />
-              <Button sign="7" />
-              <Button sign="8" />
-              <Button sign="9" />
-              <Button sign="4" />
-              <Button sign="5" />
-              <Button sign="6" />
-              <Button sign="1" />
-              <Button sign="2" />
-              <Button sign="3" />
-              <Button sign="0" />
-              <Button sign="0" />
-              <Button sign="," />
+            <div className="grey-buttons">
+              <div className="horizontal-symbols">
+                <Button sign="AC" />
+                <Button sign="+/-" />
+                <Button sign="%" />
+              </div>
+              <div className="digits">
+                <Button sign="7" onButtonClick={handleDigit} />
+                <Button sign="8" onButtonClick={handleDigit} />
+                <Button sign="9" onButtonClick={handleDigit} />
+                <Button sign="4" onButtonClick={handleDigit} />
+                <Button sign="5" onButtonClick={handleDigit} />
+                <Button sign="6" onButtonClick={handleDigit} />
+                <Button sign="1" onButtonClick={handleDigit} />
+                <Button sign="2" onButtonClick={handleDigit} />
+                <Button sign="3" onButtonClick={handleDigit} />
+                <Button sign="0" onButtonClick={handleDigit} />
+                <Button sign="0" onButtonClick={handleDigit} />
+                <Button sign="," onButtonClick={handleDigit} />
+              </div>
             </div>
             <div className="vertical-symbols">
               <Button sign="÷" />

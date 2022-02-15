@@ -1,7 +1,7 @@
 .screen {
   height: 80px;
   background-color: #000000c7;
-  width: 226px;
+  width: 220px;
   display: flex;
   justify-content: flex-end;
 }
@@ -17,7 +17,6 @@
 }
 
 .keyboard {
-  display: inline-table;
   display: flex;
 }
 
@@ -37,10 +36,18 @@
   cursor: pointer;
 }
 
-.digits {
+.grey-buttons {
   display: flex;
   flex-wrap: wrap;
-  width: 171px;
+  width: 165px;
+}
+
+.digits {
+
+}
+
+.horizontal-symbols button{
+  background-color: #383838e0;
 }
 
 .vertical-symbols {
