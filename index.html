@@ -7,44 +7,59 @@
 <body>
   <div id="root"></div>
   <script type="text/babel">
-    function Button(props) {
-      return <span className="button">{props.sign}</span>;
-    }
+    function App() {
+      const [display, setDisplay] = React.useState(0);
+      function Button(props) {
+        const handleClick = (e) => {
+          setDisplay(e.target.value);
+        };
 
-    const element = (
-      <>
-        <div className="screen">
-          <p className="display">0</p>  
-        </div>
-        <div className="keyboard">
-          <div className="horizontal"></div>
-          <div className="digits">
-            <Button sign="AC" />
-            <Button sign="+/-" />
-            <Button sign="%" />
-            <Button sign="7" />
-            <Button sign="8" />
-            <Button sign="9" />
-            <Button sign="4" />
-            <Button sign="5" />
-            <Button sign="6" />
-            <Button sign="1" />
-            <Button sign="2" />
-            <Button sign="3" />
-            <Button sign="0" />
-            <Button sign="0" />
-            <Button sign="," />
+        return (
+          <button
+            onClick={handleClick}
+            type="button"
+            className="button"
+            value={props.sign}
+          >
+            {props.sign}
+          </button>
+        );
+      }
+      return (
+        <>
+          <div className="screen">
+            <p className="display">{display}</p>
           </div>
-          <div className="vertical-symbols">
-            <Button sign="÷" />
-            <Button sign="x" />
-            <Button sign="-" />
-            <Button sign="+" />
-            <Button sign="=" />
-          </div>  
+          <div className="keyboard">
+            <div className="horizontal"></div>
+            <div className="digits">
+              <Button sign="AC" />
+              <Button sign="+/-" />
+              <Button sign="%" />
+              <Button sign="7" />
+              <Button sign="8" />
+              <Button sign="9" />
+              <Button sign="4" />
+              <Button sign="5" />
+              <Button sign="6" />
+              <Button sign="1" />
+              <Button sign="2" />
+              <Button sign="3" />
+              <Button sign="0" />
+              <Button sign="0" />
+              <Button sign="," />
+            </div>
+            <div className="vertical-symbols">
+              <Button sign="÷" />
+              <Button sign="x" />
+              <Button sign="-" />
+              <Button sign="+" />
+              <Button sign="=" />
+            </div>
           </div>
-      </>
-    );
-    ReactDOM.render(element, document.getElementById("root"));
+        </>
+      );
+    }
+    ReactDOM.render(<App />, document.getElementById("root"));
   </script>
 </body>
