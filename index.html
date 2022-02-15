@@ -1,0 +1,50 @@
+<head>
+  <script src="https://unpkg.com/react@16.12.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    function Button(props) {
+      return <span className="button">{props.sign}</span>;
+    }
+
+    const element = (
+      <>
+        <div className="screen">
+          <p className="display">0</p>  
+        </div>
+        <div className="keyboard">
+          <div className="horizontal"></div>
+          <div className="digits">
+            <Button sign="AC" />
+            <Button sign="+/-" />
+            <Button sign="%" />
+            <Button sign="7" />
+            <Button sign="8" />
+            <Button sign="9" />
+            <Button sign="4" />
+            <Button sign="5" />
+            <Button sign="6" />
+            <Button sign="1" />
+            <Button sign="2" />
+            <Button sign="3" />
+            <Button sign="0" />
+            <Button sign="0" />
+            <Button sign="," />
+          </div>
+          <div className="vertical-symbols">
+            <Button sign="÷" />
+            <Button sign="x" />
+            <Button sign="-" />
+            <Button sign="+" />
+            <Button sign="=" />
+          </div>  
+          </div>
+      </>
+    );
+    ReactDOM.render(element, document.getElementById("root"));
+  </script>
+</body>

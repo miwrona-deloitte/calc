@@ -1,0 +1,50 @@
+.screen {
+  height: 80px;
+  background-color: #000000c7;
+  width: 226px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.screen > .display {
+  color: #fff;
+  padding-right: 10px;
+  padding-top: 10px;
+  font-size: 45px;
+  position: relative;
+  top: -25px;
+  font-family: "Courier New", monospace;
+}
+
+.keyboard {
+  display: inline-table;
+  display: flex;
+}
+
+.button {
+  width: 55px;
+  height: 46px;
+  line-height: 46px;
+  background-color: rgb(112, 112, 112);
+  border: rgb(100,100,100) 1px solid;
+  color: #fff;
+  text-align: center;
+  font-family: "Arial", sans-serif;
+  font-size: 22px;
+}
+
+.digits {
+  display: flex;
+  flex-wrap: wrap;
+  width: 171px;
+}
+
+.vertical-symbols {
+  display: flex;
+  flex-wrap: wrap;
+  width: 55px;
+}
+
+.vertical-symbols > .button{
+    background-color: rgba(255, 153, 0, 0.87) !important;
+}
