@@ -11,23 +11,19 @@
     type="text/babel"
     src="./components/Button.js"
   ></script>
+  <script
+    data-plugins="transform-modules-umd"
+    type="text/babel"
+    src="./components/Digits.js"
+  ></script>
   <script data-plugins="transform-modules-umd" type="text/babel">
     import Button from "./components/Button";
+    import Digits from "./components/Digits";
     const App = () => {
       const [display, setDisplay] = React.useState(0);
       const handleDigit = (e) => {
         setDisplay(e.target.value);
       };
-      const digits = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0, ","];
-      const getButtons = () => {
-        const buttons = [];
-        digits.forEach((digit) => {
-          buttons.push(
-            <Button onButtonClick={handleDigit} sign={digit} key={digit} />
-          );
-        });
-        return buttons;
-      }
       return (
         <>
           <div className="screen">
@@ -36,11 +32,16 @@
           <div className="keyboard">
             <div className="grey-buttons">
               <div className="horizontal-symbols">
-                <Button sign="AC" />
+                <Button
+                  onButtonClick={() => {
+                    setDisplay(0);
+                  }}
+                  sign="AC"
+                />
                 <Button sign="+/-" />
                 <Button sign="%" />
               </div>
-              <div className="digits">{getButtons()}</div>
+              <Digits handleDigit={handleDigit} />
             </div>
             <div className="vertical-symbols">
               <Button sign="÷" />
@@ -52,7 +53,7 @@
           </div>
         </>
       );
-    }
+    };
     ReactDOM.render(<App />, document.getElementById("root"));
   </script>
 </body>

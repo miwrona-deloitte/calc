@@ -10,6 +10,6 @@ const Button = ({ sign, onButtonClick }) => {
       {sign}
     </button>
   );
-}
+};
 
 export default Button;
