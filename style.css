@@ -32,6 +32,10 @@
   font-size: 22px;
 }
 
+.wide {
+  width: 110px !important;
+}
+
 .button:hover {
   cursor: pointer;
 }

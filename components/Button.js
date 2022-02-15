@@ -1,9 +1,10 @@
-function Button({ sign, onButtonClick}) {
+const Button = ({ sign, onButtonClick }) => {
+  const className = sign === 0 ? "button wide" : "button";
   return (
     <button
       onClick={onButtonClick}
       type="button"
-      className="button"
+      className={className}
       value={sign}
     >
       {sign}

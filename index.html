@@ -13,11 +13,21 @@
   ></script>
   <script data-plugins="transform-modules-umd" type="text/babel">
     import Button from "./components/Button";
-    function App() {
+    const App = () => {
       const [display, setDisplay] = React.useState(0);
       const handleDigit = (e) => {
         setDisplay(e.target.value);
       };
+      const digits = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0, ","];
+      const getButtons = () => {
+        const buttons = [];
+        digits.forEach((digit) => {
+          buttons.push(
+            <Button onButtonClick={handleDigit} sign={digit} key={digit} />
+          );
+        });
+        return buttons;
+      }
       return (
         <>
           <div className="screen">
@@ -30,20 +40,7 @@
                 <Button sign="+/-" />
                 <Button sign="%" />
               </div>
-              <div className="digits">
-                <Button sign="7" onButtonClick={handleDigit} />
-                <Button sign="8" onButtonClick={handleDigit} />
-                <Button sign="9" onButtonClick={handleDigit} />
-                <Button sign="4" onButtonClick={handleDigit} />
-                <Button sign="5" onButtonClick={handleDigit} />
-                <Button sign="6" onButtonClick={handleDigit} />
-                <Button sign="1" onButtonClick={handleDigit} />
-                <Button sign="2" onButtonClick={handleDigit} />
-                <Button sign="3" onButtonClick={handleDigit} />
-                <Button sign="0" onButtonClick={handleDigit} />
-                <Button sign="0" onButtonClick={handleDigit} />
-                <Button sign="," onButtonClick={handleDigit} />
-              </div>
+              <div className="digits">{getButtons()}</div>
             </div>
             <div className="vertical-symbols">
               <Button sign="÷" />
