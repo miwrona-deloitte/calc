@@ -21,9 +21,28 @@
     import Digits from "./components/Digits";
     const App = () => {
       const [display, setDisplay] = React.useState(0);
+      const [inMemoryEvaluation, setInMemoryEvaluation] = React.useState(null);
+      
       const handleDigit = (e) => {
-        setDisplay(e.target.value);
+        let digit = e.target.value;
+        setDisplay(digit);
+        const evaluation = inMemoryEvaluation !== null ? inMemoryEvaluation + digit : digit
+        if (canConcatenate(digit)) {
+          setInMemoryEvaluation(evaluation)
+        }
       };
+
+      const canConcatenate = (digit) => {
+        if (digit === "," && inMemoryEvaluation.indexOf(digit) > 0) {
+          return false;
+        }
+        return true;
+      };
+
+      const multiply = () => {
+        
+      };
+
       return (
         <>
           <div className="screen">
@@ -35,6 +54,7 @@
                 <Button
                   onButtonClick={() => {
                     setDisplay(0);
+                    setInMemoryEvaluation(0);
                   }}
                   sign="AC"
                 />
@@ -45,7 +65,7 @@
             </div>
             <div className="vertical-symbols">
               <Button sign="÷" />
-              <Button sign="x" />
+              <Button sign="x" onButtonClick={multiply} />
               <Button sign="-" />
               <Button sign="+" />
               <Button sign="=" />
