@@ -56,9 +56,18 @@
         return false;
       };
 
-      const multiply = () => {
-        if (inMemoryEvaluation.indexOf("*") < 0) {
-          setInMemoryEvaluation(inMemoryEvaluation + "*");
+      const calculate = (event) => {
+        let operationSign = event.target.value;
+        switch (operationSign) {
+          case "÷":
+            operationSign = "/";
+            break;
+          case "x":
+            operationSign = "*";
+            break;
+        }
+        if (inMemoryEvaluation.indexOf(operationSign) < 0) {
+          setInMemoryEvaluation(inMemoryEvaluation + operationSign);
         }
       };
 
@@ -89,10 +98,10 @@
               <Digits handleDigit={handleDigit} />
             </div>
             <div className="vertical-symbols">
-              <Button sign="÷" />
-              <Button sign="x" onButtonClick={multiply} />
-              <Button sign="-" />
-              <Button sign="+" />
+              <Button sign="÷" onButtonClick={calculate} />
+              <Button sign="x" onButtonClick={calculate} />
+              <Button sign="-" onButtonClick={calculate} />
+              <Button sign="+" onButtonClick={calculate} />
               <Button sign="=" onButtonClick={equals} />
             </div>
           </div>
