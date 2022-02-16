@@ -22,11 +22,11 @@
     const App = () => {
       const [display, setDisplay] = React.useState(0);
       const [inMemoryEvaluation, setInMemoryEvaluation] = React.useState(null);
-      
+
       const handleDigit = (e) => {
         let digit = e.target.value;
         const evaluation =
-        inMemoryEvaluation !== null ? inMemoryEvaluation + digit : digit;
+          inMemoryEvaluation !== null ? inMemoryEvaluation + digit : digit;
         if (canConcatenate(digit) && !isCommaFirstDigit(digit)) {
           setInMemoryEvaluation(evaluation);
           setDisplay(evaluation);
@@ -36,9 +36,14 @@
           setDisplay("0,");
         }
       };
-      
+
       const canConcatenate = (digit) => {
-        if (digit === "," && inMemoryEvaluation !== 'undefined' && inMemoryEvaluation !== null && inMemoryEvaluation.indexOf(digit) > 0) {
+        if (
+          digit === "," &&
+          inMemoryEvaluation !== "undefined" &&
+          inMemoryEvaluation !== null &&
+          inMemoryEvaluation.indexOf(digit) > 0
+        ) {
           return false;
         }
         return true;
@@ -51,7 +56,17 @@
         return false;
       };
 
-      const multiply = () => {};
+      const multiply = () => {
+        if (inMemoryEvaluation.indexOf("*") < 0) {
+          setInMemoryEvaluation(inMemoryEvaluation + "*");
+        }
+      };
+
+      const equals = () => {
+        let result = Function("return " + inMemoryEvaluation)();
+        setInMemoryEvaluation(result);
+        setDisplay(result);
+      };
 
       return (
         <>
@@ -78,7 +93,7 @@
               <Button sign="x" onButtonClick={multiply} />
               <Button sign="-" />
               <Button sign="+" />
-              <Button sign="=" />
+              <Button sign="=" onButtonClick={equals} />
             </div>
           </div>
         </>
