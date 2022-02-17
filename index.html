@@ -28,7 +28,20 @@
         const evaluation =
           inMemoryEvaluation !== null ? inMemoryEvaluation + digit : digit;
         setInMemoryEvaluation(evaluation);
-        setDisplay(evaluation);
+        setDisplay(isOperationSignInMemory(evaluation) ? digit : evaluation);
+      };
+
+      const isOperationSignInMemory = (evaluation) => {
+        if (inMemoryEvaluation === null) {
+          return false;
+        }
+        const signs = ["/", "*", "-", "+"];
+        for (let sign of signs) {
+          if (inMemoryEvaluation.indexOf(sign) > 0) {
+            return true;
+          }
+        }
+        return false;
       };
 
       const handleComma = (e) => {
@@ -65,7 +78,9 @@
             operationSign = "*";
             break;
         }
-        if (inMemoryEvaluation.indexOf(operationSign) < 0) {
+        let lastSign = inMemoryEvaluation.slice(-1);
+        const signs = ["/", "*", "-", "+"];
+        if (signs.indexOf(lastSign) < 0) {
           setInMemoryEvaluation(inMemoryEvaluation + operationSign);
         }
       };
