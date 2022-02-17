@@ -27,33 +27,32 @@
         let digit = e.target.value;
         const evaluation =
           inMemoryEvaluation !== null ? inMemoryEvaluation + digit : digit;
-        if (canConcatenate(digit) && !isCommaFirstDigit(digit)) {
+        setInMemoryEvaluation(evaluation);
+        setDisplay(evaluation);
+      };
+
+      const handleComma = (e) => {
+        let comma = e.target.value;
+        const evaluation =
+          inMemoryEvaluation !== null ? inMemoryEvaluation + comma : comma;
+        if (canConcatenate(comma)) {
           setInMemoryEvaluation(evaluation);
           setDisplay(evaluation);
         }
-        if (isCommaFirstDigit(digit)) {
+        if (isCommaFirst(comma)) {
           setInMemoryEvaluation("0,");
           setDisplay("0,");
         }
       };
 
       const canConcatenate = (digit) => {
-        if (
-          digit === "," &&
-          inMemoryEvaluation !== "undefined" &&
-          inMemoryEvaluation !== null &&
-          inMemoryEvaluation.indexOf(digit) > 0
-        ) {
-          return false;
-        }
-        return true;
+        return (
+          inMemoryEvaluation === null || inMemoryEvaluation.indexOf(digit) < 0
+        );
       };
 
-      const isCommaFirstDigit = (digit) => {
-        if (inMemoryEvaluation === null && digit === ",") {
-          return true;
-        }
-        return false;
+      const isCommaFirst = (comma) => {
+        return inMemoryEvaluation === null && comma === ",";
       };
 
       const calculate = (event) => {
@@ -95,7 +94,7 @@
                 <Button sign="+/-" />
                 <Button sign="%" />
               </div>
-              <Digits handleDigit={handleDigit} />
+              <Digits handleDigit={handleDigit} handleComma={handleComma} />
             </div>
             <div className="vertical-symbols">
               <Button sign="÷" onButtonClick={calculate} />
