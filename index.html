@@ -28,10 +28,10 @@
         const evaluation =
           inMemoryEvaluation !== null ? inMemoryEvaluation + digit : digit;
         setInMemoryEvaluation(evaluation);
-        setDisplay(isOperationSignInMemory(evaluation) ? digit : evaluation);
+        setDisplay(isOperatorInMemory(evaluation) ? digit : evaluation);
       };
 
-      const isOperationSignInMemory = (evaluation) => {
+      const isOperatorInMemory = (evaluation) => {
         if (inMemoryEvaluation === null) {
           return false;
         }
@@ -58,9 +58,9 @@
         }
       };
 
-      const canConcatenate = (digit) => {
+      const canConcatenate = (comma) => {
         return (
-          inMemoryEvaluation === null || inMemoryEvaluation.indexOf(digit) < 0
+          inMemoryEvaluation === null || inMemoryEvaluation.indexOf(comma) < 0
         );
       };
 
@@ -69,19 +69,19 @@
       };
 
       const calculate = (event) => {
-        let operationSign = event.target.value;
-        switch (operationSign) {
+        let operator = event.target.value;
+        switch (operator) {
           case "÷":
-            operationSign = "/";
+            operator = "/";
             break;
           case "x":
-            operationSign = "*";
+            operator = "*";
             break;
         }
         let lastSign = inMemoryEvaluation.slice(-1);
         const signs = ["/", "*", "-", "+"];
         if (signs.indexOf(lastSign) < 0) {
-          setInMemoryEvaluation(inMemoryEvaluation + operationSign);
+          setInMemoryEvaluation(inMemoryEvaluation + operator);
         }
       };
 
