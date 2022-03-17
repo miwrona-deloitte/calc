@@ -26,7 +26,7 @@
       const handleDigit = (e) => {
         let digit = e.target.value;
         const evaluation =
-          inMemoryEvaluation !== null ? inMemoryEvaluation + digit : digit;
+          inMemoryEvaluation === null ? digit :inMemoryEvaluation + digit;
         setInMemoryEvaluation(evaluation);
         setDisplay(isOperatorInMemory(evaluation) ? digit : evaluation);
       };
