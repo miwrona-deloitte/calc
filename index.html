@@ -21,17 +21,35 @@
     import Digits from "./components/Digits";
     const App = () => {
       const [display, setDisplay] = React.useState(0);
+      const [currentDisplay, setCurrentDisplay] = React.useState(null);
       const [inMemoryEvaluation, setInMemoryEvaluation] = React.useState(null);
+      React.useEffect(() => {
+        if (currentDisplay !== null) {
+          setDisplay(currentDisplay);
+        }
+      }, [currentDisplay]);
 
       const handleDigit = (e) => {
         let digit = e.target.value;
         const evaluation =
           inMemoryEvaluation === null ? digit : inMemoryEvaluation + digit;
         setInMemoryEvaluation(evaluation);
-        setDisplay(isOperatorInMemory(evaluation) ? digit : evaluation);
+        setDisplay(
+          isOperatorInMemory(evaluation, digit)
+            ? getCurrentDisplay(digit)
+            : evaluation
+        );
       };
 
-      const isOperatorInMemory = (evaluation) => {
+      const getCurrentDisplay = (digit) => {
+        if (currentDisplay === null) {
+          setCurrentDisplay(digit);
+        } else {
+          setCurrentDisplay(currentDisplay + digit);
+        }
+      };
+
+      const isOperatorInMemory = (evaluation, digit) => {
         if (inMemoryEvaluation === null) {
           return false;
         }
@@ -82,11 +100,14 @@
         const signs = ["/", "*", "-", "+"];
         if (signs.indexOf(lastSign) < 0) {
           setInMemoryEvaluation(inMemoryEvaluation + operator);
+          setCurrentDisplay(null);
         }
       };
 
       const equals = () => {
-        let result = Function("return " + inMemoryEvaluation.replace(",", "."))();
+        let result = Function(
+          "return " + inMemoryEvaluation.replace(",", ".")
+        )();
         result = String(result).replace(".", ",");
         setInMemoryEvaluation(result);
         setDisplay(result);
