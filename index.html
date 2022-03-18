@@ -24,30 +24,27 @@
       const [currentDisplay, setCurrentDisplay] = React.useState(null);
       const [inMemoryEvaluation, setInMemoryEvaluation] = React.useState(null);
       const [clearButton, setClearButton] = React.useState("AC");
-      React.useEffect(() => {
-        if (currentDisplay !== null) {
-          setDisplay(currentDisplay);
-        }
-      }, [currentDisplay]);
-
+      
       const handleDigit = (e) => {
         setClearButton("C");
         let digit = e.target.value;
         const evaluation =
           inMemoryEvaluation === null ? digit : inMemoryEvaluation + digit;
         setInMemoryEvaluation(evaluation);
+        let localCurrentDisplay = getCurrentDisplay(digit);
+        setCurrentDisplay(localCurrentDisplay)
         setDisplay(
           isOperatorInMemory(evaluation, digit)
-            ? getCurrentDisplay(digit)
+            ? localCurrentDisplay
             : evaluation
         );
       };
 
       const getCurrentDisplay = (digit) => {
         if (currentDisplay === null) {
-          setCurrentDisplay(digit);
+          return digit;
         } else {
-          setCurrentDisplay(currentDisplay + digit);
+          return currentDisplay + digit;
         }
       };
 
@@ -113,6 +110,7 @@
         result = String(result).replace(".", ",");
         setInMemoryEvaluation(result);
         setDisplay(result);
+        // setCurrentDisplay(0)
       };
 
       const handleClear = (e) => {
