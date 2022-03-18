@@ -86,7 +86,8 @@
       };
 
       const equals = () => {
-        let result = Function("return " + inMemoryEvaluation)();
+        let result = Function("return " + inMemoryEvaluation.replace(",", "."))();
+        result = String(result).replace(".", ",");
         setInMemoryEvaluation(result);
         setDisplay(result);
       };
