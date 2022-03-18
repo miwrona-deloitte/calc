@@ -26,7 +26,7 @@
       const handleDigit = (e) => {
         let digit = e.target.value;
         const evaluation =
-          inMemoryEvaluation === null ? digit :inMemoryEvaluation + digit;
+          inMemoryEvaluation === null ? digit : inMemoryEvaluation + digit;
         setInMemoryEvaluation(evaluation);
         setDisplay(isOperatorInMemory(evaluation) ? digit : evaluation);
       };
@@ -37,7 +37,7 @@
         }
         const signs = ["/", "*", "-", "+"];
         for (let sign of signs) {
-          if (inMemoryEvaluation.indexOf(sign) > 0) {
+          if (String(inMemoryEvaluation).indexOf(sign) > 0) {
             return true;
           }
         }
