@@ -24,13 +24,17 @@
       const [currentDisplay, setCurrentDisplay] = React.useState(null);
       const [inMemoryEvaluation, setInMemoryEvaluation] = React.useState(null);
       const [clearButton, setClearButton] = React.useState("AC");
+      const [startNewCalculation, setStartNewCalculation] = React.useState(0);
       const OPERATORS = ["/", "*", "-", "+"];
 
       const handleDigit = (e) => {
         setClearButton("C");
         let digit = e.target.value;
         const evaluation =
-          inMemoryEvaluation === null ? digit : inMemoryEvaluation + digit;
+          inMemoryEvaluation === null || startNewCalculation
+            ? digit
+            : inMemoryEvaluation + digit;
+        setStartNewCalculation(0);
         setInMemoryEvaluation(evaluation);
         let localCurrentDisplay = getCurrentDisplay(digit);
         setCurrentDisplay(localCurrentDisplay);
@@ -86,6 +90,7 @@
       };
 
       const calculate = (event) => {
+        setStartNewCalculation(0)
         let operator = event.target.value;
         switch (operator) {
           case "÷":
@@ -109,6 +114,7 @@
         result = String(result).replace(".", ",");
         setInMemoryEvaluation(result);
         setDisplay(result);
+        setStartNewCalculation(1);
       };
 
       const handleClear = (e) => {
@@ -132,7 +138,7 @@
           setInMemoryEvaluation(newInMem);
         }
       };
-
+      
       return (
         <>
           <div className="screen">
