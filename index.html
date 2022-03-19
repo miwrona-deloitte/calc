@@ -24,6 +24,7 @@
       const [currentDisplay, setCurrentDisplay] = React.useState(null);
       const [inMemoryEvaluation, setInMemoryEvaluation] = React.useState(null);
       const [clearButton, setClearButton] = React.useState("AC");
+      const OPERATORS = ["/", "*", "-", "+"];
 
       const handleDigit = (e) => {
         setClearButton("C");
@@ -52,8 +53,7 @@
         if (inMemoryEvaluation === null) {
           return false;
         }
-        const signs = ["/", "*", "-", "+"];
-        for (let sign of signs) {
+        for (let sign of OPERATORS) {
           if (String(inMemoryEvaluation).indexOf(sign) > 0) {
             return true;
           }
@@ -96,8 +96,7 @@
             break;
         }
         let lastSign = inMemoryEvaluation.slice(-1);
-        const signs = ["/", "*", "-", "+"];
-        if (signs.indexOf(lastSign) < 0) {
+        if (OPERATORS.indexOf(lastSign) < 0) {
           setInMemoryEvaluation(inMemoryEvaluation + operator);
           setCurrentDisplay(null);
         }
@@ -125,9 +124,8 @@
           setClearButton("AC");
           let newInMem = inMemoryEvaluation.replace(currentDisplay, "");
           let lastSign = newInMem.slice(-1);
-          const signs = ["/", "*", "-", "+"];
-          for (let sign of signs) {
-            if (signs.indexOf(lastSign) >= 0) {
+          for (let sign of OPERATORS) {
+            if (OPERATORS.indexOf(lastSign) >= 0) {
               newInMem = newInMem.replace(sign, "");
             }
           }
