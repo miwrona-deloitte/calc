@@ -67,22 +67,56 @@
 
       const handleComma = (e) => {
         let comma = e.target.value;
-        const evaluation =
-          inMemoryEvaluation !== null ? inMemoryEvaluation + comma : comma;
         if (canConcatenate(comma)) {
+          const evaluation =
+            inMemoryEvaluation === null ? comma : inMemoryEvaluation + comma;
           setInMemoryEvaluation(evaluation);
+          setCurrentDisplay(evaluation);
           setDisplay(evaluation);
         }
         if (isCommaFirst(comma)) {
           setInMemoryEvaluation("0,");
           setDisplay("0,");
         }
+        if (isCommaFirstAfterLastOperator(comma)) {
+          setInMemoryEvaluation(inMemoryEvaluation + "0,");
+          setCurrentDisplay("0,");
+          setDisplay("0,");
+        }
+      };
+
+      const isCommaFirstAfterLastOperator = (comma) => {
+        if (inMemoryEvaluation === null) {
+          return false;
+        }
+        let indices = [];
+        for (let operator of OPERATORS) {
+          let id = inMemoryEvaluation.lastIndexOf(operator);
+          if (id > 0) indices.push(id);
+        }
+        if (indices.length < 1) {
+          return false;
+        }
+        let lastOperatorId = Math.max(indices);
+        let sub = inMemoryEvaluation.substring(lastOperatorId + 1);
+
+        return sub === "";
       };
 
       const canConcatenate = (comma) => {
-        return (
-          inMemoryEvaluation === null || inMemoryEvaluation.indexOf(comma) < 0
-        );
+        if (inMemoryEvaluation === null) {
+          return true;
+        }
+        if (inMemoryEvaluation.indexOf(comma) < 0) {
+          return true;
+        }
+        if (currentDisplay === null) {
+          return true;
+        }
+        if (currentDisplay.indexOf(comma) < 0) {
+          return true;
+        }
+        return false;
       };
 
       const isCommaFirst = (comma) => {
@@ -111,13 +145,20 @@
         if (inMemoryEvaluation === null) {
           return;
         }
-        let result = Function(
-          "return " + inMemoryEvaluation.replace(",", ".")
-        )();
+        let result = Function("return " + format(inMemoryEvaluation))();
         result = String(result).replace(".", ",");
         setInMemoryEvaluation(result);
         setDisplay(result);
         setStartNewCalculation(1);
+      };
+
+      const format = (evaluation) => {
+        let newInMem = inMemoryEvaluation.replaceAll(",", ".");
+        let lastSign = inMemoryEvaluation.slice(-1);
+        if (OPERATORS.indexOf(lastSign) >= 0) {
+          newInMem = inMemoryEvaluation.replace(lastSign, "");
+        }
+        return newInMem;
       };
 
       const handleClear = (e) => {
@@ -168,6 +209,13 @@
         }
         return false;
       };
+
+      console.log({
+        inMemoryEvaluation: inMemoryEvaluation,
+        currentDisplay: currentDisplay,
+        display: display,
+        startNewCalculation: startNewCalculation,
+      });
 
       return (
         <>
