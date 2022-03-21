@@ -146,6 +146,7 @@
           return;
         }
         let result = Function("return " + format(inMemoryEvaluation))();
+        parseFloat(result).toFixed(10);
         result = String(result).replace(".", ",");
         setInMemoryEvaluation(result);
         setDisplay(result);
