@@ -108,6 +108,9 @@
       };
 
       const equals = () => {
+        if (inMemoryEvaluation === null) {
+          return;
+        }
         let result = Function(
           "return " + inMemoryEvaluation.replace(",", ".")
         )();
@@ -139,6 +142,33 @@
           setStartNewCalculation(1);
         }
       };
+
+      /**
+       * from "+" to "-" and inversely
+       */
+      const reverseSign = () => {
+        if (inMemoryEvaluation === null) {
+          return;
+        }
+        if (startsWithMinus(inMemoryEvaluation)) {
+          let evaluationWithoutMinus = inMemoryEvaluation.replace("-", "");
+          setInMemoryEvaluation(evaluationWithoutMinus);
+          setDisplay(evaluationWithoutMinus);
+          return;
+        }
+        let evaluationWithMinus = "-" + inMemoryEvaluation;
+        setInMemoryEvaluation(evaluationWithMinus);
+        setDisplay(evaluationWithMinus);
+        return;
+      };
+
+      const startsWithMinus = () => {
+        if (inMemoryEvaluation.indexOf("-") === 0) {
+          return true;
+        }
+        return false;
+      };
+
       return (
         <>
           <div className="screen">
@@ -148,7 +178,7 @@
             <div className="grey-buttons">
               <div className="horizontal-symbols">
                 <Button onButtonClick={handleClear} sign={clearButton} />
-                <Button sign="+/-" />
+                <Button sign="+/-" onButtonClick={reverseSign} />
                 <Button sign="%" />
               </div>
               <Digits handleDigit={handleDigit} handleComma={handleComma} />
