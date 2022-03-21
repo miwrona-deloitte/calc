@@ -90,7 +90,7 @@
       };
 
       const calculate = (event) => {
-        setStartNewCalculation(0)
+        setStartNewCalculation(0);
         let operator = event.target.value;
         switch (operator) {
           case "÷":
@@ -136,9 +136,9 @@
             }
           }
           setInMemoryEvaluation(newInMem);
+          setStartNewCalculation(1);
         }
       };
-      
       return (
         <>
           <div className="screen">
