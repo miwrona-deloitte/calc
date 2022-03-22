@@ -26,6 +26,7 @@
       const [clearButton, setClearButton] = React.useState("AC");
       const [startNewCalculation, setStartNewCalculation] = React.useState(0);
       const OPERATORS = ["/", "*", "-", "+"];
+      const [displayFont, setDisplayFont] = React.useState("regular-font");
 
       const handleDigit = (e) => {
         setClearButton("C");
@@ -146,7 +147,12 @@
           return;
         }
         let result = Function("return " + format(inMemoryEvaluation))();
-        parseFloat(result).toFixed(10);
+        if (result.toString().length > 8) {
+          let expResult = result.toExponential(16);
+          result = expResult;
+          //change css font size
+          setDisplayFont("small-font");
+        }
         result = String(result).replace(".", ",");
         setInMemoryEvaluation(result);
         setDisplay(result);
@@ -211,17 +217,10 @@
         return false;
       };
 
-      console.log({
-        inMemoryEvaluation: inMemoryEvaluation,
-        currentDisplay: currentDisplay,
-        display: display,
-        startNewCalculation: startNewCalculation,
-      });
-
       return (
         <>
           <div className="screen">
-            <p className="display">{display}</p>
+            <p className={"display " + displayFont}>{display}</p>
           </div>
           <div className="keyboard">
             <div className="grey-buttons">
