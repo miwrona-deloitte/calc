@@ -16,9 +16,15 @@
     type="text/babel"
     src="./components/Digits.js"
   ></script>
+  <script
+    data-plugins="transform-modules-umd"
+    type="text/babel"
+    src="./components/CommaHelper.js"
+  ></script>
   <script data-plugins="transform-modules-umd" type="text/babel">
     import Button from "./components/Button";
     import Digits from "./components/Digits";
+    import CommaHelper from "./components/CommaHelper";
     const App = () => {
       const [display, setDisplay] = React.useState(0);
       const [currentDisplay, setCurrentDisplay] = React.useState(null);
@@ -68,61 +74,24 @@
 
       const handleComma = (e) => {
         let comma = e.target.value;
-        if (canConcatenate(comma)) {
+        let helper = new CommaHelper(inMemoryEvaluation, currentDisplay)
+        if (helper.canConcatenate(comma)) {
           const evaluation =
             inMemoryEvaluation === null ? comma : inMemoryEvaluation + comma;
           setInMemoryEvaluation(evaluation);
           setCurrentDisplay("0,");
           setDisplay("0,");
         }
-        if (isCommaFirst(comma)) {
+        if (helper.isCommaFirst(comma)) {
           setInMemoryEvaluation("0,");
           setDisplay("0,");
         }
-        if (isCommaFirstAfterLastOperator(comma)) {
+        if (helper.isCommaFirstAfterLastOperator(comma)) {
           setInMemoryEvaluation(inMemoryEvaluation + "0,");
           setCurrentDisplay("0,");
           setDisplay("0,");
         }
-        setStartNewCalculation(0)
-      };
-
-      const isCommaFirstAfterLastOperator = (comma) => {
-        if (inMemoryEvaluation === null) {
-          return false;
-        }
-        let indices = [];
-        for (let operator of OPERATORS) {
-          let id = inMemoryEvaluation.lastIndexOf(operator);
-          if (id > 0) indices.push(id);
-        }
-        if (indices.length < 1) {
-          return false;
-        }
-        let lastOperatorId = Math.max(indices);
-        let sub = inMemoryEvaluation.substring(lastOperatorId + 1);
-
-        return sub === "";
-      };
-
-      const canConcatenate = (comma) => {
-        if (inMemoryEvaluation === null) {
-          return true;
-        }
-        if (inMemoryEvaluation.indexOf(comma) < 0) {
-          return true;
-        }
-        if (currentDisplay === null) {
-          return true;
-        }
-        if (currentDisplay.indexOf(comma) < 0) {
-          return true;
-        }
-        return false;
-      };
-
-      const isCommaFirst = (comma) => {
-        return inMemoryEvaluation === null && comma === ",";
+        setStartNewCalculation(0);
       };
 
       const calculate = (event) => {
