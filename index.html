@@ -72,8 +72,8 @@
           const evaluation =
             inMemoryEvaluation === null ? comma : inMemoryEvaluation + comma;
           setInMemoryEvaluation(evaluation);
-          setCurrentDisplay(evaluation);
-          setDisplay(evaluation);
+          setCurrentDisplay("0,");
+          setDisplay("0,");
         }
         if (isCommaFirst(comma)) {
           setInMemoryEvaluation("0,");
@@ -84,6 +84,7 @@
           setCurrentDisplay("0,");
           setDisplay("0,");
         }
+        setStartNewCalculation(0)
       };
 
       const isCommaFirstAfterLastOperator = (comma) => {
@@ -219,7 +220,12 @@
         }
         return false;
       };
-
+      console.log({
+        inMemoryEvaluation: inMemoryEvaluation,
+        currentDisplay: currentDisplay,
+        display: display,
+        startNewCalculation: startNewCalculation,
+      });
       return (
         <>
           <div className="screen">
