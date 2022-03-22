@@ -148,10 +148,14 @@
         }
         let result = Function("return " + format(inMemoryEvaluation))();
         if (result.toString().length > 8) {
-          let expResult = result.toExponential(16);
-          result = expResult;
-          //change css font size
-          setDisplayFont("small-font");
+          let expResult = Number(result.toExponential(10)).toExponential();
+          if (expResult.length > 8) {
+            result = expResult;
+            //change css font size
+            setDisplayFont("small-font");
+          } else {
+            result = parseFloat(expResult);
+          }
         }
         result = String(result).replace(".", ",");
         setInMemoryEvaluation(result);
@@ -171,13 +175,9 @@
       const handleClear = (e) => {
         let clearSymbol = e.target.value;
         if (clearSymbol === "AC") {
-          setDisplay("0");
-          setCurrentDisplay(null);
           setInMemoryEvaluation(null);
         }
         if (clearSymbol === "C") {
-          setDisplay("0");
-          setCurrentDisplay(null);
           setClearButton("AC");
           let newInMem = inMemoryEvaluation.replace(currentDisplay, "");
           let lastSign = newInMem.slice(-1);
@@ -189,6 +189,9 @@
           setInMemoryEvaluation(newInMem);
           setStartNewCalculation(1);
         }
+        setDisplay("0");
+        setCurrentDisplay(null);
+        setDisplayFont("regular-font");
       };
 
       /**
