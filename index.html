@@ -19,11 +19,17 @@
   <script
     data-plugins="transform-modules-umd"
     type="text/babel"
+    src="./components/DigitHelper.js"
+  ></script>
+  <script
+    data-plugins="transform-modules-umd"
+    type="text/babel"
     src="./components/CommaHelper.js"
   ></script>
   <script data-plugins="transform-modules-umd" type="text/babel">
     import Button from "./components/Button";
     import Digits from "./components/Digits";
+    import DigitHelper from "./components/DigitHelper";
     import CommaHelper from "./components/CommaHelper";
     const App = () => {
       const [display, setDisplay] = React.useState(0);
@@ -35,6 +41,7 @@
       const [displayFont, setDisplayFont] = React.useState("regular-font");
 
       const handleDigit = (e) => {
+        let helper = new DigitHelper(inMemoryEvaluation, currentDisplay);
         setClearButton("C");
         let digit = e.target.value;
         const evaluation =
@@ -43,38 +50,16 @@
             : inMemoryEvaluation + digit;
         setStartNewCalculation(0);
         setInMemoryEvaluation(evaluation);
-        let localCurrentDisplay = getCurrentDisplay(digit);
+        let localCurrentDisplay = helper.getCurrentDisplay(digit);
         setCurrentDisplay(localCurrentDisplay);
         setDisplay(
-          isOperatorInMemory(evaluation, digit)
-            ? localCurrentDisplay
-            : evaluation
+          helper.isOperatorInMemory() ? localCurrentDisplay : evaluation
         );
-      };
-
-      const getCurrentDisplay = (digit) => {
-        if (currentDisplay === null) {
-          return digit;
-        } else {
-          return currentDisplay + digit;
-        }
-      };
-
-      const isOperatorInMemory = (evaluation, digit) => {
-        if (inMemoryEvaluation === null) {
-          return false;
-        }
-        for (let sign of OPERATORS) {
-          if (String(inMemoryEvaluation).indexOf(sign) > 0) {
-            return true;
-          }
-        }
-        return false;
       };
 
       const handleComma = (e) => {
         let comma = e.target.value;
-        let helper = new CommaHelper(inMemoryEvaluation, currentDisplay)
+        let helper = new CommaHelper(inMemoryEvaluation, currentDisplay);
         if (helper.canConcatenate(comma)) {
           const evaluation =
             inMemoryEvaluation === null ? comma : inMemoryEvaluation + comma;
@@ -94,7 +79,7 @@
         setStartNewCalculation(0);
       };
 
-      const calculate = (event) => {
+      const handleOperator = (event) => {
         setStartNewCalculation(0);
         let operator = event.target.value;
         switch (operator) {
@@ -189,12 +174,7 @@
         }
         return false;
       };
-      console.log({
-        inMemoryEvaluation: inMemoryEvaluation,
-        currentDisplay: currentDisplay,
-        display: display,
-        startNewCalculation: startNewCalculation,
-      });
+
       return (
         <>
           <div className="screen">
@@ -210,10 +190,10 @@
               <Digits handleDigit={handleDigit} handleComma={handleComma} />
             </div>
             <div className="vertical-symbols">
-              <Button sign="÷" onButtonClick={calculate} />
-              <Button sign="x" onButtonClick={calculate} />
-              <Button sign="-" onButtonClick={calculate} />
-              <Button sign="+" onButtonClick={calculate} />
+              <Button sign="÷" onButtonClick={handleOperator} />
+              <Button sign="x" onButtonClick={handleOperator} />
+              <Button sign="-" onButtonClick={handleOperator} />
+              <Button sign="+" onButtonClick={handleOperator} />
               <Button sign="=" onButtonClick={equals} />
             </div>
           </div>
