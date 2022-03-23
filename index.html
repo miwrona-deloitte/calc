@@ -52,20 +52,16 @@
         setInMemoryFormula(formula);
         let localCurrentDisplay = helper.getCurrentDisplay(digit);
         setCurrentTerm(localCurrentDisplay);
-        setDisplay(
-          helper.isOperatorInMemory() ? localCurrentDisplay : formula
-        );
+        setDisplay(helper.isOperatorInMemory() ? localCurrentDisplay : formula);
       };
 
       const handleComma = (e) => {
         let comma = e.target.value;
         let helper = new CommaHelper(inMemoryFormula, currentTerm);
         if (helper.canConcatenate(comma)) {
-          const formula =
-            inMemoryFormula === null ? comma : inMemoryFormula + comma;
-          setInMemoryFormula(formula);
-          setCurrentTerm("0,");
-          setDisplay("0,");
+            setInMemoryFormula(inMemoryFormula + comma);
+            setCurrentTerm(currentTerm + comma);
+            setDisplay(currentTerm + comma);
         }
         if (helper.isCommaFirst(comma)) {
           setInMemoryFormula("0,");

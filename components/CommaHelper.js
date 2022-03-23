@@ -20,23 +20,23 @@ export default function CommaHelper(inMemoryFormula, currentTerm) {
   };
 
   this.isCommaFirst = (comma) => {
-    return inMemoryFormula === null && comma === ",";
+    return this.inMemoryFormula === null && comma === ",";
   };
   
   this.isCommaFirstAfterLastOperator = (comma) => {
-    if (inMemoryFormula === null) {
+    if (this.inMemoryFormula === null) {
       return false;
     }
     let indices = [];
     for (let operator of OPERATORS) {
-      let id = inMemoryFormula.lastIndexOf(operator);
+      let id = this.inMemoryFormula.lastIndexOf(operator);
       if (id > 0) indices.push(id);
     }
     if (indices.length < 1) {
       return false;
     }
     let lastOperatorId = Math.max(indices);
-    let sub = inMemoryFormula.substring(lastOperatorId + 1);
+    let sub = this.inMemoryFormula.substring(lastOperatorId + 1);
 
     return sub === "";
   };
