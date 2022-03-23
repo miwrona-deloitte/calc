@@ -44,16 +44,16 @@
         let helper = new DigitHelper(inMemoryFormula, currentTerm);
         setClearButton("C");
         let digit = e.target.value;
-        const evaluation =
+        const formula =
           inMemoryFormula === null || startNewTerm
             ? digit
             : inMemoryFormula + digit;
         setStartNewTerm(0);
-        setInMemoryFormula(evaluation);
+        setInMemoryFormula(formula);
         let localCurrentDisplay = helper.getCurrentDisplay(digit);
         setCurrentTerm(localCurrentDisplay);
         setDisplay(
-          helper.isOperatorInMemory() ? localCurrentDisplay : evaluation
+          helper.isOperatorInMemory() ? localCurrentDisplay : formula
         );
       };
 
@@ -61,9 +61,9 @@
         let comma = e.target.value;
         let helper = new CommaHelper(inMemoryFormula, currentTerm);
         if (helper.canConcatenate(comma)) {
-          const evaluation =
+          const formula =
             inMemoryFormula === null ? comma : inMemoryFormula + comma;
-          setInMemoryFormula(evaluation);
+          setInMemoryFormula(formula);
           setCurrentTerm("0,");
           setDisplay("0,");
         }
@@ -118,7 +118,7 @@
         setStartNewTerm(1);
       };
 
-      const format = (evaluation) => {
+      const format = (formula) => {
         let newInMem = inMemoryFormula.replaceAll(",", ".");
         let lastSign = inMemoryFormula.slice(-1);
         if (OPERATORS.indexOf(lastSign) >= 0) {
@@ -157,14 +157,14 @@
           return;
         }
         if (startsWithMinus(inMemoryFormula)) {
-          let evaluationWithoutMinus = inMemoryFormula.replace("-", "");
-          setInMemoryFormula(evaluationWithoutMinus);
-          setDisplay(evaluationWithoutMinus);
+          let formulaWithoutMinus = inMemoryFormula.replace("-", "");
+          setInMemoryFormula(formulaWithoutMinus);
+          setDisplay(formulaWithoutMinus);
           return;
         }
-        let evaluationWithMinus = "-" + inMemoryFormula;
-        setInMemoryFormula(evaluationWithMinus);
-        setDisplay(evaluationWithMinus);
+        let formulaWithMinus = "-" + inMemoryFormula;
+        setInMemoryFormula(formulaWithMinus);
+        setDisplay(formulaWithMinus);
         return;
       };
 
