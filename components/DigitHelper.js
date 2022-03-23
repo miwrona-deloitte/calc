@@ -1,22 +1,22 @@
-export default function DigitHelper(inMemoryEvaluation, currentDisplay) {
-  this.inMemoryEvaluation = inMemoryEvaluation;
-  this.currentDisplay = currentDisplay;
+export default function DigitHelper(inMemoryFormula, currentTerm) {
+  this.inMemoryFormula = inMemoryFormula;
+  this.currentTerm = currentTerm;
   const OPERATORS = ["/", "*", "-", "+"];
 
   this.getCurrentDisplay = (digit) => {
-    if (this.currentDisplay === null) {
+    if (this.currentTerm === null) {
       return digit;
     } else {
-      return this.currentDisplay + digit;
+      return this.currentTerm + digit;
     }
   };
 
   this.isOperatorInMemory = () => {
-    if (this.inMemoryEvaluation === null) {
+    if (this.inMemoryFormula === null) {
       return false;
     }
     for (let sign of OPERATORS) {
-      if (String(this.inMemoryEvaluation).indexOf(sign) > 0) {
+      if (String(this.inMemoryFormula).indexOf(sign) > 0) {
         return true;
       }
     }

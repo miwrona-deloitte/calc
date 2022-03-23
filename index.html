@@ -33,25 +33,25 @@
     import CommaHelper from "./components/CommaHelper";
     const App = () => {
       const [display, setDisplay] = React.useState(0);
-      const [currentDisplay, setCurrentDisplay] = React.useState(null);
-      const [inMemoryEvaluation, setInMemoryEvaluation] = React.useState(null);
+      const [currentTerm, setCurrentTerm] = React.useState(null);
+      const [inMemoryFormula, setInMemoryFormula] = React.useState(null);
       const [clearButton, setClearButton] = React.useState("AC");
       const [startNewCalculation, setStartNewCalculation] = React.useState(0);
       const OPERATORS = ["/", "*", "-", "+"];
       const [displayFont, setDisplayFont] = React.useState("regular-font");
 
       const handleDigit = (e) => {
-        let helper = new DigitHelper(inMemoryEvaluation, currentDisplay);
+        let helper = new DigitHelper(inMemoryFormula, currentTerm);
         setClearButton("C");
         let digit = e.target.value;
         const evaluation =
-          inMemoryEvaluation === null || startNewCalculation
+          inMemoryFormula === null || startNewCalculation
             ? digit
-            : inMemoryEvaluation + digit;
+            : inMemoryFormula + digit;
         setStartNewCalculation(0);
-        setInMemoryEvaluation(evaluation);
+        setInMemoryFormula(evaluation);
         let localCurrentDisplay = helper.getCurrentDisplay(digit);
-        setCurrentDisplay(localCurrentDisplay);
+        setCurrentTerm(localCurrentDisplay);
         setDisplay(
           helper.isOperatorInMemory() ? localCurrentDisplay : evaluation
         );
@@ -59,21 +59,21 @@
 
       const handleComma = (e) => {
         let comma = e.target.value;
-        let helper = new CommaHelper(inMemoryEvaluation, currentDisplay);
+        let helper = new CommaHelper(inMemoryFormula, currentTerm);
         if (helper.canConcatenate(comma)) {
           const evaluation =
-            inMemoryEvaluation === null ? comma : inMemoryEvaluation + comma;
-          setInMemoryEvaluation(evaluation);
-          setCurrentDisplay("0,");
+            inMemoryFormula === null ? comma : inMemoryFormula + comma;
+          setInMemoryFormula(evaluation);
+          setCurrentTerm("0,");
           setDisplay("0,");
         }
         if (helper.isCommaFirst(comma)) {
-          setInMemoryEvaluation("0,");
+          setInMemoryFormula("0,");
           setDisplay("0,");
         }
         if (helper.isCommaFirstAfterLastOperator(comma)) {
-          setInMemoryEvaluation(inMemoryEvaluation + "0,");
-          setCurrentDisplay("0,");
+          setInMemoryFormula(inMemoryFormula + "0,");
+          setCurrentTerm("0,");
           setDisplay("0,");
         }
         setStartNewCalculation(0);
@@ -90,18 +90,18 @@
             operator = "*";
             break;
         }
-        let lastSign = inMemoryEvaluation.slice(-1);
+        let lastSign = inMemoryFormula.slice(-1);
         if (OPERATORS.indexOf(lastSign) < 0) {
-          setInMemoryEvaluation(inMemoryEvaluation + operator);
-          setCurrentDisplay(null);
+          setInMemoryFormula(inMemoryFormula + operator);
+          setCurrentTerm(null);
         }
       };
 
       const equals = () => {
-        if (inMemoryEvaluation === null) {
+        if (inMemoryFormula === null) {
           return;
         }
-        let result = Function("return " + format(inMemoryEvaluation))();
+        let result = Function("return " + format(inMemoryFormula))();
         if (result.toString().length > 8) {
           let expResult = Number(result.toExponential(10)).toExponential();
           if (expResult.length > 8) {
@@ -113,16 +113,16 @@
           }
         }
         result = String(result).replace(".", ",");
-        setInMemoryEvaluation(result);
+        setInMemoryFormula(result);
         setDisplay(result);
         setStartNewCalculation(1);
       };
 
       const format = (evaluation) => {
-        let newInMem = inMemoryEvaluation.replaceAll(",", ".");
-        let lastSign = inMemoryEvaluation.slice(-1);
+        let newInMem = inMemoryFormula.replaceAll(",", ".");
+        let lastSign = inMemoryFormula.slice(-1);
         if (OPERATORS.indexOf(lastSign) >= 0) {
-          newInMem = inMemoryEvaluation.replace(lastSign, "");
+          newInMem = inMemoryFormula.replace(lastSign, "");
         }
         return newInMem;
       };
@@ -130,22 +130,22 @@
       const handleClear = (e) => {
         let clearSymbol = e.target.value;
         if (clearSymbol === "AC") {
-          setInMemoryEvaluation(null);
+          setInMemoryFormula(null);
         }
         if (clearSymbol === "C") {
           setClearButton("AC");
-          let newInMem = inMemoryEvaluation.replace(currentDisplay, "");
+          let newInMem = inMemoryFormula.replace(currentTerm, "");
           let lastSign = newInMem.slice(-1);
           for (let sign of OPERATORS) {
             if (OPERATORS.indexOf(lastSign) >= 0) {
               newInMem = newInMem.replace(sign, "");
             }
           }
-          setInMemoryEvaluation(newInMem);
+          setInMemoryFormula(newInMem);
           setStartNewCalculation(1);
         }
         setDisplay("0");
-        setCurrentDisplay(null);
+        setCurrentTerm(null);
         setDisplayFont("regular-font");
       };
 
@@ -153,23 +153,23 @@
        * from "+" to "-" and inversely
        */
       const reverseSign = () => {
-        if (inMemoryEvaluation === null) {
+        if (inMemoryFormula === null) {
           return;
         }
-        if (startsWithMinus(inMemoryEvaluation)) {
-          let evaluationWithoutMinus = inMemoryEvaluation.replace("-", "");
-          setInMemoryEvaluation(evaluationWithoutMinus);
+        if (startsWithMinus(inMemoryFormula)) {
+          let evaluationWithoutMinus = inMemoryFormula.replace("-", "");
+          setInMemoryFormula(evaluationWithoutMinus);
           setDisplay(evaluationWithoutMinus);
           return;
         }
-        let evaluationWithMinus = "-" + inMemoryEvaluation;
-        setInMemoryEvaluation(evaluationWithMinus);
+        let evaluationWithMinus = "-" + inMemoryFormula;
+        setInMemoryFormula(evaluationWithMinus);
         setDisplay(evaluationWithMinus);
         return;
       };
 
       const startsWithMinus = () => {
-        if (inMemoryEvaluation.indexOf("-") === 0) {
+        if (inMemoryFormula.indexOf("-") === 0) {
           return true;
         }
         return false;
