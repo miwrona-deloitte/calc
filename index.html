@@ -36,7 +36,7 @@
       const [currentTerm, setCurrentTerm] = React.useState(null);
       const [inMemoryFormula, setInMemoryFormula] = React.useState(null);
       const [clearButton, setClearButton] = React.useState("AC");
-      const [startNewCalculation, setStartNewCalculation] = React.useState(0);
+      const [startNewTerm, setStartNewTerm] = React.useState(0);
       const OPERATORS = ["/", "*", "-", "+"];
       const [displayFont, setDisplayFont] = React.useState("regular-font");
 
@@ -45,10 +45,10 @@
         setClearButton("C");
         let digit = e.target.value;
         const evaluation =
-          inMemoryFormula === null || startNewCalculation
+          inMemoryFormula === null || startNewTerm
             ? digit
             : inMemoryFormula + digit;
-        setStartNewCalculation(0);
+        setStartNewTerm(0);
         setInMemoryFormula(evaluation);
         let localCurrentDisplay = helper.getCurrentDisplay(digit);
         setCurrentTerm(localCurrentDisplay);
@@ -76,11 +76,11 @@
           setCurrentTerm("0,");
           setDisplay("0,");
         }
-        setStartNewCalculation(0);
+        setStartNewTerm(0);
       };
 
       const handleOperator = (event) => {
-        setStartNewCalculation(0);
+        setStartNewTerm(0);
         let operator = event.target.value;
         switch (operator) {
           case "÷":
@@ -115,7 +115,7 @@
         result = String(result).replace(".", ",");
         setInMemoryFormula(result);
         setDisplay(result);
-        setStartNewCalculation(1);
+        setStartNewTerm(1);
       };
 
       const format = (evaluation) => {
@@ -142,7 +142,7 @@
             }
           }
           setInMemoryFormula(newInMem);
-          setStartNewCalculation(1);
+          setStartNewTerm(1);
         }
         setDisplay("0");
         setCurrentTerm(null);
